@@ -124,14 +124,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Customer.cpp" />
+    <ClCompile Include="DigitalProduct.cpp" />
     <ClCompile Include="oop_lab.2.cpp" />
     <ClCompile Include="Order.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="PhysicalProduct.cpp" />
     <ClCompile Include="Product.cpp" />
+    <ClCompile Include="Store.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="DigitalProduct.h" />
     <ClInclude Include="Order.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="PhysicalProduct.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="Store.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

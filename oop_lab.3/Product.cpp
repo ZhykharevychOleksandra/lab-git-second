@@ -58,13 +58,11 @@ Product Product::operator+(const Product& other) {
     );
 }
 
-// unary operator ++
 Product& Product::operator++() {
     price++;
     return *this;
 }
 
-// <<
 std::ostream& operator<<(std::ostream& os, const Product& product) {
     os << "ID: " << product.id
         << ", Name: " << product.name
@@ -72,7 +70,6 @@ std::ostream& operator<<(std::ostream& os, const Product& product) {
     return os;
 }
 
-// >>
 std::istream& operator>>(std::istream& is, Product& product) {
     std::cout << "Enter ID: ";
     is >> product.id;
@@ -84,6 +81,10 @@ std::istream& operator>>(std::istream& is, Product& product) {
     is >> product.price;
 
     return is;
+}
+
+void Product::applyDiscount() {
+    std::cout << "Base discount applied\n";
 }
 
 Product::~Product() {

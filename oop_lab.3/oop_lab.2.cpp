@@ -1,44 +1,153 @@
 ﻿#include <iostream>
+#include <utility>
 #include "Product.h"
 #include "Customer.h"
 #include "Order.h"
+#include "PhysicalProduct.h"
+#include "DigitalProduct.h"
+
+#include <memory>
+#include <fstream>
+#include "Store.h"
+
+void show(const Product& p) {
+    p.printInfo();
+}
+
+void adminMenu(Store& store) {
+    std::string password;
+
+    std::cout << "Enter password: ";
+    std::cin >> password;
+
+    if (password != "1234") {
+        std::cout << "Wrong password!\n";
+        return;
+    }
+
+    int choice;
+    std::cout << "1. Add Physical Product\n2. Add Digital Product\n";
+    std::cin >> choice;
+
+    try {
+        if (std::cin.fail()) {
+            throw std::runtime_error("Invalid input");
+        }
+
+        int id;
+        std::string name;
+        double price;
+
+        std::cout << "Enter id: ";
+        std::cin >> id;
+
+        std::cout << "Enter name: ";
+        std::cin >> name;
+
+        std::cout << "Enter price: ";
+        std::cin >> price;
+
+        if (choice == 1) {
+            double weight;
+            std::cout << "Enter weight: ";
+            std::cin >> weight;
+
+            store.addProduct(
+                std::make_shared<PhysicalProduct>(id, name, price, weight)
+            );
+        }
+        else if (choice == 2) {
+            double size;
+            std::cout << "Enter file size: ";
+            std::cin >> size;
+
+            store.addProduct(
+                std::make_shared<DigitalProduct>(id, name, price, size)
+            );
+        }
+
+        store.saveToFile();
+        std::cout << "Product saved!\n";
+    }
+    catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+    }
+}
+
+void userMenu(Store& store) {
+    store.loadFromFile();
+    store.showProducts();
+    std::ofstream history("history.txt", std::ios::app);
+    history << "User opened product list\n";
+}
 
 int main() {
 
-    // базові об'єкти
-    Product p1(1, "Laptop", 25000);
-    Customer c1(2, "Sasha", "sasha@gmail.com");
+    Store store;
 
-    Order o1(100, p1, c1, 2);
-    o1.printInfo();
+    int choice;
 
-    std::cout << "\n--- Copy constructor ---\n";
-    Product p2 = p1; // копія
+    while (true) {
+        std::cout << "1. Admin\n2. User\n0. Exit\n";
+        std::cin >> choice;
 
-    std::cout << "\n--- Move constructor ---\n";
-    Product p3 = std::move(p1); // переміщення
+        try {
+            if (std::cin.fail()) {
+                throw std::runtime_error("Invalid input");
+            }
 
-    std::cout << "\n--- Unary operator ++ ---\n";
-    ++p2;
-    p2.printInfo();
+            if (choice == 1) {
+                adminMenu(store);
+            }
+            else if (choice == 2) {
+                userMenu(store);
+            }
+            else {
+                break;
+            }
+        }
+        catch (std::exception& e) {
+            std::cout << e.what() << std::endl;
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+        }
+    }
 
-    std::cout << "\n--- Binary operator + ---\n";
-    Product p4 = p2 + p3;
-    std::cout << p4 << std::endl;
+    std::cout << "\n--- Static Binding ---\n";
 
-    std::cout << "\n--- Stream operators ---\n";
-    Product p5;
-    std::cin >> p5;
-    std::cout << p5 << std::endl;
+    PhysicalProduct pp(10, "Laptop", 25000, 2.5);
+    DigitalProduct dp(11, "Game", 500, 15.0);
 
-    std::cout << "\n--- Const object ---\n";
-    const Product p6(3, "Phone", 15000);
-    std::cout << "Price: " << p6.getPrice() << std::endl;
+    pp.printInfo();
+    dp.printInfo();
 
-    std::cout << "\n--- Static field ---\n";
-    std::cout << "Products created: "
-        << Product::getProductCount()
-        << std::endl;
+    std::cout << "\n--- Dynamic Polymorphism ---\n";
+
+    Product* p1 = new PhysicalProduct(1, "Laptop", 25000, 2.5);
+    Product* p2 = new DigitalProduct(2, "Game", 500, 15.0);
+
+    p1->printInfo();
+    p2->printInfo();
+
+    //p1->applyDiscount();
+    //p2->applyDiscount();
+
+    std::cout << "\nAfter discount:\n";
+    p1->printInfo();
+    p2->printInfo();
+
+    std::cout << "\nPrices:\n";
+    std::cout << p1->getPrice() << std::endl;
+    std::cout << p2->getPrice() << std::endl;
+
+    std::cout << "\n--- Reference polymorphism ---\n";
+    show(*p1);
+    show(*p2);
+
+    delete p1;
+    delete p2;
 
     return 0;
 }
