@@ -2,3 +2,13 @@
 *.tmp
 .vs/ 
 .vs/ 
+x64/
+Debug/
+Release/
+*.obj
+*.exe
+*.tlog
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.sln
