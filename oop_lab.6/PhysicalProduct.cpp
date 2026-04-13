@@ -34,14 +34,14 @@ void PhysicalProduct::printInfo() const {
     std::cout << "Weight: " << weight << std::endl;
 }
 
-PhysicalProduct::~PhysicalProduct() {
-    std::cout << "PhysicalProduct destroyed\n";
-}
-
 double PhysicalProduct::getPrice() const {
-    return price + 50; // доставка
+    return price + 50; 
 }
 
 void PhysicalProduct::applyDiscount() {
     price *= 0.9;
+}
+
+PhysicalProduct::~PhysicalProduct() {
+    std::cout << "PhysicalProduct destroyed\n";
 }

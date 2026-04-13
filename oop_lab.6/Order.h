@@ -6,7 +6,7 @@
 class Order {
 private:
     int orderId;
-    Product* product;
+    Product product;
     Customer customer;
     int quantity;
 
@@ -14,7 +14,7 @@ private:
 
 public:
     Order(int orderId = 0,
-        Product* product = nullptr,
+        Product product = Product(),
         Customer customer = Customer(),
         int quantity = 1);
 

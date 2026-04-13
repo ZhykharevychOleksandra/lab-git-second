@@ -29,14 +29,51 @@ void adminMenu(Store& store) {
     std::cout << "1. Add Physical Product\n2. Add Digital Product\n";
     std::cin >> choice;
 
-    if (choice == 1) {
-        store.addProduct(std::make_shared<PhysicalProduct>(1, "Laptop", 25000, 2.5));
-    }
-    else if (choice == 2) {
-        store.addProduct(std::make_shared<DigitalProduct>(2, "Game", 500, 10));
-    }
+    try {
+        if (std::cin.fail()) {
+            throw std::runtime_error("Invalid input");
+        }
 
-    store.saveToFile();
+        int id;
+        std::string name;
+        double price;
+
+        std::cout << "Enter id: ";
+        std::cin >> id;
+
+        std::cout << "Enter name: ";
+        std::cin >> name;
+
+        std::cout << "Enter price: ";
+        std::cin >> price;
+
+        if (choice == 1) {
+            double weight;
+            std::cout << "Enter weight: ";
+            std::cin >> weight;
+
+            store.addProduct(
+                std::make_shared<PhysicalProduct>(id, name, price, weight)
+            );
+        }
+        else if (choice == 2) {
+            double size;
+            std::cout << "Enter file size: ";
+            std::cin >> size;
+
+            store.addProduct(
+                std::make_shared<DigitalProduct>(id, name, price, size)
+            );
+        }
+
+        store.saveToFile();
+        std::cout << "Product saved!\n";
+    }
+    catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+    }
 }
 
 void userMenu(Store& store) {
@@ -94,8 +131,8 @@ int main() {
     p1->printInfo();
     p2->printInfo();
 
-    p1->applyDiscount();
-    p2->applyDiscount();
+    //p1->applyDiscount();
+    //p2->applyDiscount();
 
     std::cout << "\nAfter discount:\n";
     p1->printInfo();

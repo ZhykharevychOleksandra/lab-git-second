@@ -3,60 +3,75 @@
 
 int Customer::customerCount = 0;
 
-//конструктор
 Customer::Customer(int id,
     std::string name,
     std::string email)
-    : Person(id, name), email(email) {
+    : id(id), name(name), email(email) {
 
     customerCount++;
 }
 
-// copy
+// copy constructor
 Customer::Customer(const Customer& other)
-    : Person(other), email(other.email) {
+    : id(other.id), name(other.name), email(other.email) {
 
     std::cout << "Customer copied\n";
     customerCount++;
 }
 
-// move
+// move constructor
 Customer::Customer(Customer&& other) noexcept
-    : Person(std::move(other)), email(std::move(other.email)) {
+    : id(other.id), name(std::move(other.name)), email(std::move(other.email)) {
 
     std::cout << "Customer moved\n";
+    other.id = 0;
     customerCount++;
 }
 
 void Customer::printInfo() const {
-    Person::printInfo();
-    std::cout << "Email: " << email << std::endl;
+    std::cout << "ID: " << id
+        << ", Name: " << name
+        << ", Email: " << email << std::endl;
 }
 
+// this
 void Customer::setEmail(std::string email) {
     this->email = email;
 }
 
+// const
 std::string Customer::getEmail() const {
     return email;
 }
 
+// static
 int Customer::getCustomerCount() {
     return customerCount;
 }
 
+// <<
 std::ostream& operator<<(std::ostream& os, const Customer& c) {
-    os << "Email: " << c.email;
+    os << "ID: " << c.id
+        << ", Name: " << c.name
+        << ", Email: " << c.email;
     return os;
 }
 
+// >>
 std::istream& operator>>(std::istream& is, Customer& c) {
+    std::cout << "Enter id: ";
+    is >> c.id;
+
+    std::cout << "Enter name: ";
+    is >> c.name;
+
     std::cout << "Enter email: ";
     is >> c.email;
+
     return is;
 }
 
 Customer::~Customer() {
-    std::cout << "Customer destroyed\n";
+    std::cout << "Customer destroyed: " << name << std::endl;
     customerCount--;
 }

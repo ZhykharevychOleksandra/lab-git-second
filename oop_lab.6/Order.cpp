@@ -4,7 +4,7 @@
 int Order::orderCount = 0;
 
 Order::Order(int orderId,
-    Product* product,
+    Product product,
     Customer customer,
     int quantity)
     : orderId(orderId),
@@ -42,12 +42,8 @@ Order::Order(Order&& other) noexcept
 
 void Order::printInfo() const {
     std::cout << "Order ID: " << orderId << std::endl;
-
-    if (product)
-        product->printInfo();
-
+    product.printInfo();
     customer.printInfo();
-
     std::cout << "Quantity: " << quantity << std::endl;
 }
 
@@ -82,12 +78,14 @@ Order Order::operator+(const Order& other) {
     );
 }
 
+// <<
 std::ostream& operator<<(std::ostream& os, const Order& order) {
     os << "Order ID: " << order.orderId
         << ", Quantity: " << order.quantity;
     return os;
 }
 
+// >>
 std::istream& operator>>(std::istream& is, Order& order) {
     std::cout << "Enter order ID: ";
     is >> order.orderId;
@@ -99,7 +97,6 @@ std::istream& operator>>(std::istream& is, Order& order) {
 }
 
 Order::~Order() {
-    delete product;
-    //std::cout << "Order destroyed: " << orderId << std::endl;
-    //orderCount--;
+    std::cout << "Order destroyed: " << orderId << std::endl;
+    orderCount--;
 }

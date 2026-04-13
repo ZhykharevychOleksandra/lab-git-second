@@ -12,10 +12,10 @@ public:
         double price = 0.0,
         double weight = 0.0);
 
-    PhysicalProduct(const PhysicalProduct& other);
-    PhysicalProduct(PhysicalProduct&& other) noexcept;
+    PhysicalProduct(const PhysicalProduct& other);  //copy
+    PhysicalProduct(PhysicalProduct&& other) noexcept;  //move
 
-    PhysicalProduct& operator=(const PhysicalProduct& other);
+    PhysicalProduct& operator=(const PhysicalProduct& other); 
 
     void printInfo() const override;
     double getPrice() const override;
